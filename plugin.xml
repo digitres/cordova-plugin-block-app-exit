@@ -30,6 +30,6 @@
 
         <source-file src="src/android/com/digitres/cordova/plugin/block-app-exit.kt" target-dir="java/com/digitres/cordova/plugin/"/>
 
-        <source-file src="src/android/com/digitres/cordova/plugin/block-activity.kt" target-dir="java/com/digitres/cordova/plugin/"/>
+<!--        <source-file src="src/android/com/digitres/cordova/plugin/block-activity.kt" target-dir="java/com/digitres/cordova/plugin/"/>-->
     </platform>
 </plugin>
