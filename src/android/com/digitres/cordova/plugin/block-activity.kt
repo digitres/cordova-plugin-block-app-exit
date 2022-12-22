@@ -1,23 +1,24 @@
 package com.digitres.cordova.plugin
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import org.apache.cordova.*;
-import android.widget.*;
-import android.view.Window;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.KeyEvent;
-import android.view.ViewGroup.LayoutParams;
-import java.lang.Integer;
-import java.util.Collections;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.app.ActionBar
+import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import org.apache.cordova.*
+import android.widget.*
+import android.view.Window
+import android.view.View
+import android.view.WindowManager
+import android.view.KeyEvent
+import android.view.ViewGroup.LayoutParams
+import java.lang.Integer
+import java.util.Collections
+import java.util.Set
+import java.util.Timer
+import java.util.TimerTask
+
 
 class BlockActivity: CordovaActivity() {
 

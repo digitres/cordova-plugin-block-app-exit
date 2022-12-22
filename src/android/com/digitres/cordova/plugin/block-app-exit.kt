@@ -5,9 +5,10 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-
+import android.app.Activity
 import android.app.ActivityManager
-import android.content.*
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ class BlockAppExit: CordovaPlugin(){
     ): Boolean {
             // blockExit()
             if (action.equals("disable")) {
+                val context: ActivityManager = getApplicationContext()
                 val newIntent = Intent(context, BlockActivity::class.java)
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(newIntent)
