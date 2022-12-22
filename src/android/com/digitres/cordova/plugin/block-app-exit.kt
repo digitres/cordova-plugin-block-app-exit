@@ -24,10 +24,10 @@ class BlockAppExit: CordovaPlugin(){
     ): Boolean {
             // blockExit()
             context = callbackContext
-            if (action == 'disable') {
+            if (action.equals("disable")) {
                 blockEnabled = true
                 echo("App exit disabled",callbackContext)
-            } else if (action == 'enable') {
+            } else if (action.equals("enable")) {
                 blockEnabled = false
                 echo("App exit enabled",callbackContext)
             }
