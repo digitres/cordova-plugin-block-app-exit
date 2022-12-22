@@ -19,8 +19,8 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BlockActivity extends CordovaActivity {
-    
+class BlockActivity: CordovaActivity() {
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
