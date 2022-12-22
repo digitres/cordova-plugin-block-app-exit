@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-block-app-exit" version="1.0.0">
 
-    <name>BlockAppExit3</name>
+    <name>BlockAppExit4</name>
     <description>Blocks user from existing the current app via the home button or settings. Useful for launcher apps</description>
     <keywords>cordova,plugin,block,app,exit, android</keywords>
     <license>MIT</license>
