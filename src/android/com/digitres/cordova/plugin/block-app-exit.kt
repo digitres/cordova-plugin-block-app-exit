@@ -13,6 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 //import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.widget.Toast
+import com.digitres.cordova.plugin.BlockActivity
 
 class BlockAppExit: CordovaPlugin(){
     private var exitAllowed: Boolean = true
@@ -23,6 +24,9 @@ class BlockAppExit: CordovaPlugin(){
     ): Boolean {
             // blockExit()
             if (action.equals("disable")) {
+                val newIntent = Intent(context, BlockActivity::class.java)
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(newIntent)
                 exitAllowed = false
                 echo("App exit disabled",callbackContext)
             } else if (action.equals("enable")) {
