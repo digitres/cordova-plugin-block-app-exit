@@ -12,7 +12,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 //import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import android.widget.Toast
 
 class BlockAppExit: CordovaPlugin(){
     private exitAllowed: bool = true
@@ -35,12 +35,14 @@ class BlockAppExit: CordovaPlugin(){
             return true
         }
 
+
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            Toast.makeText(BlockAppExit, "Has focus", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@BlockAppExit, "Has focus", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(BlockAppExit, "Focus changed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@BlockAppExit, "Focus changed", Toast.LENGTH_SHORT).show()
         }
 
 //        if (!hasFocus) {
@@ -68,7 +70,7 @@ class BlockAppExit: CordovaPlugin(){
         message: String,
         callbackContext: CallbackContext
     ) {
-        Toast.makeText(context, "Echo from Plugin", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this@BlockAppExit, "Echo from Plugin", Toast.LENGTH_SHORT).show();
         if (message.isNotEmpty()) {
             callbackContext.success(message);
         } else {
