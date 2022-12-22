@@ -21,7 +21,8 @@ import java.util.TimerTask;
 
 class BlockActivity: CordovaActivity() {
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
+    @Override
+    fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             System.out.println("Focus found");
@@ -33,8 +34,8 @@ class BlockActivity: CordovaActivity() {
             //  Toast.makeText(context, "Focus changed", Toast.LENGTH_SHORT).show()
         }
     }
-
-    override fun onPause() {
+    @Override
+    fun onPause() {
         super.onPause()
         val activityManager: ActivityManager = getApplicationContext()
             .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
