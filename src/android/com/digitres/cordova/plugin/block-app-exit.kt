@@ -16,7 +16,6 @@ import android.widget.Toast
 
 class BlockAppExit: CordovaPlugin(){
     private var exitAllowed: Boolean = true
-    private var context: CallbackContext?
     override fun execute(
         action: String,
         args: JSONArray,
@@ -31,7 +30,7 @@ class BlockAppExit: CordovaPlugin(){
                 exitAllowed = true
                 echo("App exit enabled",callbackContext)
             } else  {
-                echo("Echo from plugin", callbackContext")
+                echo("Echo from plugin", callbackContext)
             }
 
             return true

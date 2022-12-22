@@ -25,11 +25,11 @@ class BlockActivity: CordovaActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            System.out.println("Has Focus");
+            System.out.println("Has Focus")
            // callbackContext.success("Has focus");
             //  Toast.makeText(context, "Has focus", Toast.LENGTH_SHORT).show()
         } else {
-            System.out.println("Focus changed");
+            System.out.println("Focus changed")
           //  callbackContext.success("Focus changed");
             //  Toast.makeText(context, "Focus changed", Toast.LENGTH_SHORT).show()
         }
