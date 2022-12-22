@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-block-app-exit" version="1.0.0">
+
+    <name>BlockAppExit</name>
+    <description>Blocks user from existing the current app via the home button or settings. Useful for launcher apps</description>
+    <keywords>cordova,plugin,block,app,exit, android</keywords>
+    <license>MIT</license>
+    <js-module name="Block App Exit Plugin" src="www/blockAppExit.js">
+        <clobbers target="cordova.plugins.blockAppExit" />
+    </js-module>
+    <engines>
+        <engine name="cordova" version=">=10.0.0"/>
+        <engine name="cordova-android" version=">=9.0.0"/>
+    </engines>
+
+    <platform name="android">
+        <source-file src="src/android/com/digitres/cordova/plugin/block-app-exit.kt" target-dir="java/com/digitres/cordova/plugin/"/>
+
+        <config-file target="config.xml" parent="/*">
+            <preference name="GradlePluginKotlinEnabled" value="true" />
+            <feature name="BlockAppExit">
+                <param name="android-package" value="com.digitres.cordova.plugin.BlockAppExit"/>
+            </feature>
+        </config-file>
+    </platform>
+</plugin>

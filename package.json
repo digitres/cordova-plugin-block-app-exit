@@ -1,0 +1,37 @@
+{
+  "name": "cordova-plugin-block-app-exit",
+  "version": "1.0.0",
+  "description": "Blocks user from existing the current app via the home button or settings. Useful for launcher apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitres/cordova-plugin-block-app-exit.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Lenny Chavhunduka",
+  "license": "ISC",
+  "engines": {
+    "cordovaDependencies": {
+      "1.0.0": {
+        "cordova": ">=11.0.0",
+        "cordova-android": ">=10.1.1"
+      }
+    }
+  },
+  "cordova": {
+    "id": "cordova-plugin-block-app-exit",
+    "platforms": [
+      "android"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/digitres/cordova-plugin-block-app-exit/issues"
+  },
+  "homepage": "https://github.com/digitres/cordova-plugin-block-app-exit#readme"
+}
