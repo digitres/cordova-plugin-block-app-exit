@@ -16,13 +16,19 @@
     </engines>
 
     <platform name="android">
-        <source-file src="src/android/com/digitres/cordova/plugin/block-app-exit.kt" target-dir="java/com/digitres/cordova/plugin/"/>
-
         <config-file target="config.xml" parent="/*">
             <preference name="GradlePluginKotlinEnabled" value="true" />
             <feature name="BlockAppExit">
                 <param name="android-package" value="com.digitres.cordova.plugin.BlockAppExit"/>
             </feature>
         </config-file>
+
+        <edit-config file="AndroidManifest.xml" target="/manifest/application/activity[@android:label='@string/activity_name']" mode="merge">
+            <activity android:name="com.digitres.cordova.plugin.BlockActivity" android:keepScreenOn="true" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            </activity>
+        </edit-config>
+
+        <source-file src="src/android/com/digitres/cordova/plugin/block-app-exit.kt" target-dir="java/com/digitres/cordova/plugin/"/>
+        <source-file src="src/android/com/digitres/cordova/plugin/block-activity.kt" target-dir="java/com/digitres/cordova/plugin/"/>
     </platform>
 </plugin>

@@ -15,8 +15,8 @@ import androidx.core.content.ContextCompat
 import android.widget.Toast
 
 class BlockAppExit: CordovaPlugin(){
-    private exitAllowed: bool = true
-    private context: CallbackContext
+    private var exitAllowed: Boolean = true
+    private var context: CallbackContext?
     override fun execute(
         action: String,
         args: JSONArray,
@@ -25,56 +25,28 @@ class BlockAppExit: CordovaPlugin(){
             // blockExit()
             context = callbackContext
             if (action.equals("disable")) {
-                blockEnabled = true
+                exitAllowed = false
                 echo("App exit disabled",callbackContext)
             } else if (action.equals("enable")) {
-                blockEnabled = false
+                exitAllowed = true
                 echo("App exit enabled",callbackContext)
+            } else  {
+                echo("Echo from plugin", callbackContext")
             }
 
             return true
         }
 
-
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            Toast.makeText(this@BlockAppExit, "Has focus", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this@BlockAppExit, "Focus changed", Toast.LENGTH_SHORT).show()
-        }
-
-//        if (!hasFocus) {
-//            val windowCloseExecutor = ContextCompat.getMainExecutor(this)
-//            windowCloseExecutor.execute {
-//                val am = applicationContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-//                val cn = am.getRunningTasks(1)[0].topActivity
-//                if (cn != null && cn.className == "com.android.systemui.recent.RecentsActivity") {
-//                    blockRecentButton()
-//                }
-//            }
-//        }
-    }
-
-
-//    override fun onPause() {
-//        super.onPause()
-//        val activityManager = applicationContext
-//            .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-//        activityManager.moveTaskToFront(taskId, 0)
-//    }
-
-
     private fun echo(
         message: String,
         callbackContext: CallbackContext
     ) {
-        Toast.makeText(this@BlockAppExit, "Echo from Plugin", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "Echo from Plugin", Toast.LENGTH_SHORT).show();
         if (message.isNotEmpty()) {
             callbackContext.success(message);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
         }
     }
+
 }
