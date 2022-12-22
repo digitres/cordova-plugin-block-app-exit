@@ -39,6 +39,7 @@ class BlockAppExit: CordovaPlugin(){
         message: String,
         callbackContext: CallbackContext
     ) {
+        System.out.println("Entering echo")
        // Toast.makeText(context, "Echo from Plugin", Toast.LENGTH_SHORT).show();
         if (message.isNotEmpty()) {
             callbackContext.success(message);
