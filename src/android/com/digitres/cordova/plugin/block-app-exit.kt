@@ -21,13 +21,10 @@ class BlockAppExit: CordovaPlugin(){
         args: JSONArray,
         callbackContext: CallbackContext
     ): Boolean {
-        if (action == "block") {
-           // blockExit()
+            // blockExit()
             echo("Message from Plugin",callbackContext)
             return true
         }
-        return false
-    }
 
     // this just brings the current activity back to the front hence preventing user from leaving
 //    private fun blockExit() {
@@ -38,7 +35,7 @@ class BlockAppExit: CordovaPlugin(){
 
 
     private fun echo(
-        message: String,
+        message: String= "Test echo message",
         callbackContext: CallbackContext
     ) {
         if (message.isNotEmpty()) {
