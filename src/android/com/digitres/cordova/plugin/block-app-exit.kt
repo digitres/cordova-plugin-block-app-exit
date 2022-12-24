@@ -26,22 +26,6 @@ class BlockAppExit: CordovaPlugin(){
         args: JSONArray,
         callbackContext: CallbackContext
     ): Boolean {
-        when (action) {
-            "disable" -> {
-                val newIntent = Intent(context, BlockActivity::class.java)
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(newIntent)
-                exitAllowed = false
-                echo("App exit disabled", callbackContext)
-            }
-            "enable" -> {
-                exitAllowed = true
-                echo("App exit enabled", callbackContext)
-            }
-            else -> {
-                callbackContext.error("Error from plugin")
-            }
-        }
         callbackContext.success("Response from Plugin");
         return true
     }
