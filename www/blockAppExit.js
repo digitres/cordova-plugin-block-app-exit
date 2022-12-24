@@ -22,6 +22,16 @@ var blockAppExit = {
             []
         );
     },
+
+    echo: function (success, error) {
+        cordova.exec(
+            success,
+            error,
+            'BlockAppExit',
+            'echo',
+            []
+        );
+    },
 } ;
 
 module.exports = blockAppExit;

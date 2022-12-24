@@ -14,39 +14,42 @@ import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 //import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.digitres.cordova.plugin.BlockActivity
 
 class BlockAppExit: CordovaPlugin(){
     private var exitAllowed: Boolean = true
+    private val context: Context = this.cordova.getActivity().getApplicationContext()
+
     override fun execute(
         action: String,
         args: JSONArray,
         callbackContext: CallbackContext
     ): Boolean {
-            // blockExit()
-            if (action.equals("disable")) {
-                val context: ActivityManager = getApplicationContext()
-                val newIntent = Intent(context, BlockActivity::class.java)
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(newIntent)
-                exitAllowed = false
-                echo("App exit disabled",callbackContext)
-            } else if (action.equals("enable")) {
-                exitAllowed = true
-                echo("App exit enabled",callbackContext)
-            } else  {
-                echo("Echo from plugin", callbackContext)
-            }
-
-            return true
-        }
+//        when (action) {
+//            "disable" -> {
+//                val newIntent = Intent(context, BlockActivity::class.java)
+//                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                context.startActivity(newIntent)
+//                exitAllowed = false
+//                echo("App exit disabled", callbackContext)
+//            }
+//            "enable" -> {
+//                exitAllowed = true
+//                echo("App exit enabled", callbackContext)
+//            }
+//            else -> {
+//                callbackContext.error("Error from plugin")
+//            }
+//        }
+        callbackContext.success("Response from Plugin");
+        return true
+    }
 
     private fun echo(
         message: String,
         callbackContext: CallbackContext
     ) {
-        System.out.println("Entering echo")
-       // Toast.makeText(context, "Echo from Plugin", Toast.LENGTH_SHORT).show();
         if (message.isNotEmpty()) {
             callbackContext.success(message);
         } else {
