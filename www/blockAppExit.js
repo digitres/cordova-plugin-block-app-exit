@@ -15,16 +15,6 @@ var blockAppExit = {
         );
     },
 
-    disable: function (success, error) {
-        cordova.exec(
-            success,
-            error,
-            'BlockAppExit',
-            'disable',
-            []
-        );
-    },
-
    echo: function (success, error) {
         cordova.exec(
             success,
