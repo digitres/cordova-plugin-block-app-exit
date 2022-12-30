@@ -28,15 +28,6 @@ import android.content.ComponentName
 import android.app.ActivityManager
 import android.content.*
 
-//import androidx.activity.addCallback
-
-//import android.view.KeyEvent
-//import org.apache.cordova.CordovaActivity
-//import android.view.View.OnKeyListener;
-//
-//import android.view.KeyEvent.Callback;
-
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,6 +36,12 @@ class BlockAppExit: CordovaPlugin(){
     var closeSystemDialogIntervalMillis: Long = 200
     @kotlin.jvm.Volatile
     var closeSystemDialogDurationMillis: Long = 20000
+
+    override fun initialize(cordova: CordovaInterface?, webView: CordovaWebView?) {
+        super.initialize(cordova, webView)
+        enableBlockAppExit()
+    }
+
 
     override fun execute(
         action: String,
@@ -55,7 +52,8 @@ class BlockAppExit: CordovaPlugin(){
           //  this.eventsContext = callbackContext
             when (action){
                 "enable" -> {
-                    enableBlockAppExit(callbackContext)
+                    enableBlockAppExit()
+                    callbackContext.success("Block App exit enabled")
                     return true
                 }
 
@@ -65,7 +63,7 @@ class BlockAppExit: CordovaPlugin(){
                 }
             }
         } catch (ex: Exception){
-            callbackContext.error("Error in BlockAppExit Plugin execute function: ${ex.message}");
+            callbackContext.error("BlockAppExit Plugin error: ${ex.message}");
             return false
         }
 
@@ -88,6 +86,11 @@ class BlockAppExit: CordovaPlugin(){
         val am: ActivityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         var taskId = this.cordova.getActivity().getTaskId()
         am.moveTaskToFront(taskId, 0)
+    }
+
+    override fun onResume(multitasking: Boolean ){
+        super.onResume(multitasking)
+        enableBlockAppExit()
     }
 
     fun closeSystemDialogs(){
@@ -115,14 +118,14 @@ class BlockAppExit: CordovaPlugin(){
         }, begin, timeInterval)
     }
 
-    private fun enableBlockAppExit(callbackContext: CallbackContext){
+    private fun enableBlockAppExit(){
         try {
             val win: Window = this.cordova.getActivity().getWindow()
             val existingCallback: Window.Callback = win.getCallback()
             win.setCallback(blockAppWindowCallback(existingCallback, this::onWindowFocusChanged))
-            callbackContext.success("Block App exit enabled")
-        } catch (ex: Exception) {
-            callbackContext.error("Failed to enable block: ${ex.message}");
+        } catch (e: Exception) {
+            e.printStackTrace()
+            this.alert("ELK Alert", e.toString(), "Close")
         }
     }
 
