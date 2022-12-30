@@ -28,15 +28,6 @@ import android.content.ComponentName
 import android.app.ActivityManager
 import android.content.*
 
-//import androidx.activity.addCallback
-
-//import android.view.KeyEvent
-//import org.apache.cordova.CordovaActivity
-//import android.view.View.OnKeyListener;
-//
-//import android.view.KeyEvent.Callback;
-
-
 import java.util.Timer;
 import java.util.TimerTask;
 
