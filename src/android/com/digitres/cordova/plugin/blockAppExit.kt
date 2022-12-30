@@ -28,23 +28,23 @@ import android.content.ComponentName
 import android.app.ActivityManager
 import android.content.*
 
+//import androidx.activity.addCallback
+
+//import android.view.KeyEvent
+//import org.apache.cordova.CordovaActivity
+//import android.view.View.OnKeyListener;
+//
+//import android.view.KeyEvent.Callback;
+
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 class BlockAppExit: CordovaPlugin(){
-
-    override protected fun pluginInitialize() {
-        // Intercept window events
-//        try {
-//            val win: Window = this.cordova.getActivity().getWindow()
-//            val existingCallback: Window.Callback = win.getCallback()
-//            win.setCallback(blockAppWindowCallback(existingCallback, this::onWindowFocusChanged))
-//
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            this.alert("ELK Alert: Error initialising blockAppExitPlugin: \n", e.toString(), "Close")
-//        }
-
-    }
-
+    @kotlin.jvm.Volatile
+    var closeSystemDialogIntervalMillis: Long = 200
+    @kotlin.jvm.Volatile
+    var closeSystemDialogDurationMillis: Long = 20000
 
     override fun execute(
         action: String,
@@ -58,10 +58,7 @@ class BlockAppExit: CordovaPlugin(){
                     enableBlockAppExit(callbackContext)
                     return true
                 }
-               "disable" -> {
-                     callbackContext.success("Block App exit disabled")
-                   return true
-               }
+
                 else ->{
                     echo("Unknown action in BlockAppExit Plugin execute function: $action",callbackContext)
                     return false
@@ -75,27 +72,9 @@ class BlockAppExit: CordovaPlugin(){
     }
 
     private fun onWindowFocusChanged(hasFocus: Boolean?) {
-
         if (hasFocus!! == false) { // trape if trying to close window
-            var appContext: Context = this.cordova.getActivity().getApplicationContext()
-
             try {
-               // this.alert("ELK Alert", "Window losing focus", "Close")
-
-                val windowCloseExecutor = ContextCompat.getMainExecutor(appContext)
-                windowCloseExecutor.execute {
-                    val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-                    val cn = am.getRunningTasks(1)[0].topActivity
-                    if (cn != null && cn.className == "com.android.systemui.recent.RecentsActivity") {
-                        val closeRecents = Intent("com.android.systemui.recent.action.TOGGLE_RECENTS")
-                        closeRecents.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                        val recents =
-                            ComponentName("com.android.systemui", "com.android.systemui.recent.RecentsActivity")
-                        closeRecents.component = recents
-                        appContext.startActivity(closeRecents)
-                    }
-                }
+                closeSystemDialogs()
             } catch (e: Exception) {
                 e.printStackTrace()
                 this.alert("ELK Alert", e.toString(), "Close")
@@ -103,15 +82,38 @@ class BlockAppExit: CordovaPlugin(){
         }
     }
 
-
     override fun onPause(multitasking: Boolean ) {
-      //  this.alert("ELK Alert", "App paused", "Close")
+        super.onPause(multitasking)
         var appContext: Context = this.cordova.getActivity().getApplicationContext()
         val am: ActivityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         var taskId = this.cordova.getActivity().getTaskId()
         am.moveTaskToFront(taskId, 0)
     }
 
+    fun closeSystemDialogs(){
+        var appContext: Context = this.cordova.getActivity().getApplicationContext()
+        val closeDialog = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
+        appContext.sendBroadcast(closeDialog)
+        val am: ActivityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        am.moveTaskToFront(this.cordova.getActivity().getTaskId(), ActivityManager.MOVE_TASK_WITH_HOME)
+        val timer = Timer()
+        val begin : Long = 0
+        val timeInterval: Long = this.closeSystemDialogIntervalMillis
+        val duration: Long = this.closeSystemDialogDurationMillis
+        timer.schedule(object: TimerTask() {
+            var counter = 0
+            override fun run() {
+                //call the method
+                val closeDialog = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
+                appContext.sendBroadcast(closeDialog)
+                counter++
+                // run for x seconds
+                if (counter * timeInterval >= duration) {
+                    timer.cancel()
+                }
+            }
+        }, begin, timeInterval)
+    }
 
     private fun enableBlockAppExit(callbackContext: CallbackContext){
         try {
