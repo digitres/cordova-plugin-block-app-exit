@@ -23,6 +23,7 @@ import android.view.View
 import android.view.WindowManager;
 import android.app.ActionBar
 import androidx.core.content.ContextCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.activity.ComponentActivity
 import android.content.ComponentName
 import android.app.ActivityManager
@@ -95,8 +96,7 @@ class BlockAppExit: CordovaPlugin(){
 
     fun closeSystemDialogs(){
         var appContext: Context = this.cordova.getActivity().getApplicationContext()
-        val closeDialog = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
-        appContext.sendBroadcast(closeDialog)
+        NotificationManagerCompat.from(appContext).cancelAll()
         val am: ActivityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         am.moveTaskToFront(this.cordova.getActivity().getTaskId(), ActivityManager.MOVE_TASK_WITH_HOME)
         val timer = Timer()
@@ -107,8 +107,7 @@ class BlockAppExit: CordovaPlugin(){
             var counter = 0
             override fun run() {
                 //call the method
-                val closeDialog = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
-                appContext.sendBroadcast(closeDialog)
+                NotificationManagerCompat.from(appContext).cancelAll()
                 counter++
                 // run for x seconds
                 if (counter * timeInterval >= duration) {
