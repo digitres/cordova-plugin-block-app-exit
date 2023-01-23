@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-block-app-exit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Blocks user from existing the current app via the home button or settings. Useful for launcher apps",
   "main": "index.js",
   "scripts": {
