@@ -37,11 +37,13 @@ class BlockAppExit: CordovaPlugin(){
     var closeSystemDialogIntervalMillis: Long = 200
     @kotlin.jvm.Volatile
     var closeSystemDialogDurationMillis: Long = 20000
+    @kotlin.jvm.Volatile
+    var enabled: Boolean = false
 
-    override fun initialize(cordova: CordovaInterface?, webView: CordovaWebView?) {
-        super.initialize(cordova, webView)
-        enableBlockAppExit()
-    }
+//    override fun initialize(cordova: CordovaInterface?, webView: CordovaWebView?) {
+//        super.initialize(cordova, webView)
+//        enableBlockAppExit()
+//    }
 
 
     override fun execute(
@@ -57,7 +59,15 @@ class BlockAppExit: CordovaPlugin(){
                     callbackContext.success("Block App exit enabled")
                     return true
                 }
-
+                "disable" -> {
+                    this.enabled = false
+                    callbackContext.success("Block App exit disabled")
+                    return true
+                }
+                "echo" -> {
+                    echo("echo from Plugin",callbackContext)
+                    return true
+                }
                 else ->{
                     echo("Unknown action in BlockAppExit Plugin execute function: $action",callbackContext)
                     return false
@@ -71,7 +81,7 @@ class BlockAppExit: CordovaPlugin(){
     }
 
     private fun onWindowFocusChanged(hasFocus: Boolean?) {
-        if (hasFocus!! == false) { // trape if trying to close window
+        if (!hasFocus!! && this.enabled) { // trape if trying to close window
             try {
                 closeSystemDialogs()
             } catch (e: Exception) {
@@ -81,12 +91,15 @@ class BlockAppExit: CordovaPlugin(){
         }
     }
 
+
     override fun onPause(multitasking: Boolean ) {
         super.onPause(multitasking)
-        var appContext: Context = this.cordova.getActivity().getApplicationContext()
-        val am: ActivityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        var taskId = this.cordova.getActivity().getTaskId()
-        am.moveTaskToFront(taskId, 0)
+        if (this.enabled) {
+            var appContext: Context = this.cordova.getActivity().getApplicationContext()
+            val am: ActivityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            var taskId = this.cordova.getActivity().getTaskId()
+            am.moveTaskToFront(taskId, 0)
+        }
     }
 
     override fun onResume(multitasking: Boolean ){
@@ -119,12 +132,13 @@ class BlockAppExit: CordovaPlugin(){
 
     private fun enableBlockAppExit(){
         try {
+            this.enabled  = true
             val win: Window = this.cordova.getActivity().getWindow()
             val existingCallback: Window.Callback = win.getCallback()
             win.setCallback(blockAppWindowCallback(existingCallback, this::onWindowFocusChanged))
         } catch (e: Exception) {
             e.printStackTrace()
-            this.alert("ELK Alert", e.toString(), "Close")
+            this.alert("ELK Block-Exit-Alert", e.toString(), "Close")
         }
     }
 
