@@ -7,7 +7,7 @@
     <description>Blocks user from existing the current app via the home button or settings. Useful for launcher apps</description>
     <keywords>cordova,plugin,block,app,exit, android</keywords>
     <license>MIT</license>
-    <js-module name="Block App Exit Plugin" src="www/blockAppExit.js">
+    <js-module name="BlockAppExit" src="www/blockAppExit.js">
         <clobbers target="cordova.plugins.blockAppExit" />
     </js-module>
     <engines>
@@ -16,17 +16,17 @@
     </engines>
 
     <platform name="android">
-        <source-file src="src/android/com/digitres/cordova/plugin/blockAppExit.kt" target-dir="java/com/digitres/cordova/plugin/"/>
-        <source-file src="src/android/com/digitres/cordova/plugin/blockAppWindowCallback.kt" target-dir="java/com/digitres/cordova/plugin/"/>
+        <source-file src="src/android/com/digitres/cordova/plugin/BlockAppExit.kt" target-dir="app/src/main/kotlin/com/digitres/cordova/plugin/"/>
+        <source-file src="src/android/com/digitres/cordova/plugin/BlockAppWindowCallback.kt" target-dir="app/src/main/kotlin/com/digitres/cordova/plugin/"/>
 
-        <config-file target="config.xml" parent="/*">
+        <config-file target="res/xml/config.xml" parent="/*">
             <preference name="GradlePluginKotlinEnabled" value="true" />
             <feature name="BlockAppExit">
                 <param name="android-package" value="com.digitres.cordova.plugin.BlockAppExit"/>
-                <param name="onload" value="true" />
+                <param name="onload" value="false" />
             </feature>
         </config-file>
-        <config-file target="AndroidManifest.xml" parent="/manifest">
+        <config-file target="AndroidManifest.xml" parent="/manifest" mode="merge">
             <uses-permission android:name="android.permission.REORDER_TASKS"/>
             <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
             <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>

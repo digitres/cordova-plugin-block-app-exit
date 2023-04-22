@@ -39,6 +39,7 @@ class BlockAppExit: CordovaPlugin(){
     var closeSystemDialogDurationMillis: Long = 20000
     @kotlin.jvm.Volatile
     var enabled: Boolean = false
+    private var globalCallbackContext: CallbackContext? = null
 
 //    override fun initialize(cordova: CordovaInterface?, webView: CordovaWebView?) {
 //        super.initialize(cordova, webView)
@@ -52,11 +53,15 @@ class BlockAppExit: CordovaPlugin(){
         callbackContext: CallbackContext
     ): Boolean {
         try {
-          //  this.eventsContext = callbackContext
+            this.globalCallbackContext = callbackContext
             when (action){
                 "enable" -> {
-                    enableBlockAppExit()
-                    callbackContext.success("Block App exit enabled")
+                    if (android.os.Build.VERSION.SDK_INT >= 24) { // Android 7
+                        enableBlockAppExit()
+                        callbackContext.success("Block App exit enabled")
+                    } else {
+                        callbackContext.error("Block App Exit plugin works for android 7+")
+                    }
                     return true
                 }
                 "disable" -> {
@@ -104,7 +109,12 @@ class BlockAppExit: CordovaPlugin(){
 
     override fun onResume(multitasking: Boolean ){
         super.onResume(multitasking)
-        enableBlockAppExit()
+        if (android.os.Build.VERSION.SDK_INT >= 24) { // Android 7
+            enableBlockAppExit()
+            this.globalCallbackContext?.success("Block App exit enabled")
+        } else {
+            this.globalCallbackContext?.error("Block App Exit plugin works for android 7+")
+        }
     }
 
     fun closeSystemDialogs(){
@@ -133,9 +143,10 @@ class BlockAppExit: CordovaPlugin(){
     private fun enableBlockAppExit(){
         try {
             this.enabled  = true
-            val win: Window = this.cordova.getActivity().getWindow()
-            val existingCallback: Window.Callback = win.getCallback()
-            win.setCallback(blockAppWindowCallback(existingCallback, this::onWindowFocusChanged))
+            val win: Window = this.cordova.activity.window
+            val existingCallback: Window.Callback = win.callback
+            win.callback = BlockAppWindowCallback(existingCallback, this::onWindowFocusChanged)
+
         } catch (e: Exception) {
             e.printStackTrace()
             this.alert("ELK Block-Exit-Alert", e.toString(), "Close")
