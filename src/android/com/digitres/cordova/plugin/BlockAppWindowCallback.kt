@@ -14,7 +14,7 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import java.util.function.Consumer
 
-class blockAppWindowCallback(
+class BlockAppWindowCallback(
     existingCallback: Window.Callback,
     windowFocusChangedCallback: Consumer<Boolean?>
 ) : Window.Callback {
@@ -23,7 +23,7 @@ class blockAppWindowCallback(
 
     init {
         this.existingCallback = existingCallback
-        onWindowFocusedChangedCallback = windowFocusChangedCallback
+        this.onWindowFocusedChangedCallback = windowFocusChangedCallback
     }
 
    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
